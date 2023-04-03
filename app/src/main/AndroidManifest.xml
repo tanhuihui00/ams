@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AttendanceManagementApplication">
         <activity
+            android:name=".FaceRecognition"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
