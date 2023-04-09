@@ -3,6 +3,7 @@ package my.edu.utar.attendancemanagementapplication;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -80,6 +81,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 //save latitude and longitude to DB (attendance session)
                 //finalLat
                 //finalLog
+                Intent intent = new Intent(MapsActivity.this, TrackUserLocation.class);
+                intent.putExtra("lat", finalLat);
+                intent.putExtra("lng", finalLog);
+                startActivity(intent);
             }
         });
     }
@@ -226,7 +231,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 result.add(perm);
             }
         }
-
         return result;
     }
 
@@ -249,7 +253,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
         switch (requestCode) {
-
             case ALL_PERMISSIONS_RESULT:
                 for (Object perms : permissionsToRequest) {
                     if (!hasPermission((String) perms)) {
@@ -257,23 +260,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 }
 
-                if (permissionsRejected.size() > 0) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (shouldShowRequestPermissionRationale((String) permissionsRejected.get(0))) {
-                            showMessageOKCancel("These permissions are mandatory for the application. Please allow access.",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                requestPermissions((String[]) permissionsRejected.toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
-                                            }
+            if (permissionsRejected.size() > 0) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (shouldShowRequestPermissionRationale((String) permissionsRejected.get(0))) {
+                        showMessageOKCancel("These permissions are mandatory for the application. Please allow access.",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                            requestPermissions((String[]) permissionsRejected.toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
                                         }
-                                    });
-                            return;
-                        }
+                                    }
+                                });
+                        return;
                     }
                 }
-                break;
+            }
+            break;
         }
     }
 
