@@ -2,6 +2,7 @@ package my.edu.utar.attendancemanagementapplication;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -70,6 +72,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         searchAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                
+                //hide keyboard
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
                 searchAddress();
             }
         });
