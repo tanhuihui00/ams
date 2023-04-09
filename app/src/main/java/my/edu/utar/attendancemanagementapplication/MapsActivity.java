@@ -1,23 +1,37 @@
 package my.edu.utar.attendancemanagementapplication;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-public class MapsActivity extends AppCompatActivity {
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private ArrayList permissionsToRequest;
     private ArrayList permissionsRejected = new ArrayList();
@@ -25,6 +39,17 @@ public class MapsActivity extends AppCompatActivity {
 
     private final static int ALL_PERMISSIONS_RESULT = 101;
     LocationTrack locationTrack;
+
+    private GoogleMap mMap;
+    private MapView mapView;
+
+    private Marker previousMarker;
+
+    Geocoder geocoder;
+    EditText addressEditText;
+    Button submitBtn;
+
+    Double finalLat, finalLog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,36 +59,163 @@ public class MapsActivity extends AppCompatActivity {
         permissions.add(ACCESS_FINE_LOCATION);
         permissions.add(ACCESS_COARSE_LOCATION);
 
+        mapView = findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);
+
+        mapView.getMapAsync(this);
+
+        Button searchAddress = findViewById(R.id.addressBtn);
+
+        searchAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchAddress();
+            }
+        });
+
+        submitBtn = findViewById(R.id.submitButton);
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //save latitude and longitude to DB (attendance session)
+                //finalLat
+                //finalLog
+            }
+        });
+    }
+
+    public void searchAddress(){
+        geocoder = new Geocoder(this,Locale.getDefault());
+        addressEditText = findViewById(R.id.addressEditText);
+        String addressString = addressEditText.getText().toString();
+        List<Address> addresses = null;
+
+        try {
+            addresses = geocoder.getFromLocationName(addressString, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (addresses != null && addresses.size() > 0) {
+            Address address = addresses.get(0);
+            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+            resetMarker(latLng,false);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        } else {
+            Toast.makeText(this, "Address not found", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
         permissionsToRequest = findUnAskedPermissions(permissions);
         //get the permissions we have asked for before but are not granted..
         //we will store this in a global list to access later.
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
             if (permissionsToRequest.size() > 0)
                 requestPermissions((String[]) permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
         }
 
-        Button trackBtn = findViewById(R.id.trackButton);
-        trackBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                locationTrack = new LocationTrack(MapsActivity.this);
+        locationTrack = new LocationTrack(MapsActivity.this);
 
-                if (locationTrack.canGetLocation()) {
+        if (locationTrack.canGetLocation()) {
+            mMap = googleMap;
+            double mLat = locationTrack.getLatitude();
+            double mLon = locationTrack.getLongitude();
 
-                    double longitude = locationTrack.getLongitude();
-                    double latitude = locationTrack.getLatitude();
+            addressEditText = findViewById(R.id.addressEditText);
+            addressEditText.setText(getCompleteAddressString(mLat, mLon));
 
-                    Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
-                } else {
+            LatLng myLocation = new LatLng(mLat, mLon);
 
-                    locationTrack.showSettingsAlert();
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(myLocation)
+                    .title("Current Location");
+            previousMarker = mMap.addMarker(markerOptions);
+
+            previousMarker.showInfoWindow();
+
+            finalLat = mLat;
+            finalLog = mLon;
+
+            mMap.setMyLocationEnabled(true);
+
+            mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+                @Override
+                public boolean onMyLocationButtonClick() {
+                    resetMarker(myLocation, true);
+                    addressEditText = findViewById(R.id.addressEditText);
+                    addressEditText.setText(getCompleteAddressString(mLat, mLon));
+
+                    return false;
                 }
+            });
 
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation,15));
+
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    resetMarker(latLng, false);
+                    addressEditText = findViewById(R.id.addressEditText);
+                    addressEditText.setText(getCompleteAddressString(latLng.latitude,latLng.longitude));
+                }
+            });
+
+        } else {
+            locationTrack.showSettingsAlert();
+        }
+    }
+
+    public void resetMarker(LatLng latLng, Boolean currentLoc){
+        String title = "";
+
+        if (previousMarker != null) {
+            previousMarker.remove();
+        }
+
+        if(currentLoc){
+            title = "Current Location";
+        }else{
+            title = "Selected Location";
+        }
+
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(latLng)
+                .title(title);
+        previousMarker = mMap.addMarker(markerOptions);
+        previousMarker.showInfoWindow();
+
+        finalLat = latLng.latitude;
+        finalLog = latLng.longitude;
+    }
+
+    public String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+
+                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i));
+                }
+                strAdd = strReturnedAddress.toString();
+            } else {
+                Toast.makeText(this,"No Address returned!",Toast.LENGTH_LONG).show();
             }
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this,"Cannot get address!",Toast.LENGTH_LONG).show();
+        }
+        return strAdd;
     }
 
     private ArrayList findUnAskedPermissions(ArrayList wanted) {
@@ -132,6 +284,24 @@ public class MapsActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", null)
                 .create()
                 .show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 
     @Override
