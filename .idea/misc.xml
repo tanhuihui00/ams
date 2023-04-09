@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/drawable/button_back.xml" value="0.11296296296296296" />
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_generate_scan_qr.xml" value="0.1" />
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_main.xml" value="0.2359375" />
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_maps.xml" value="0.2359375" />
         <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_face_recognition.xml" value="0.2717391304347826" />
         <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_face_tracker.xml" value="0.26811594202898553" />
         <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_main.xml" value="0.192481884057971" />
