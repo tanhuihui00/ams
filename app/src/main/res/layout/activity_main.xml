@@ -12,4 +12,12 @@
         android:layout_height="wrap_content"
         android:text="Go to location tracking module" />
 
+    <Button
+        android:id="@+id/QRButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="611dp"
+        android:text="QR Code Scanner" />
+
 </RelativeLayout>
