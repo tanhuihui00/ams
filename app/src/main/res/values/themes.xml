@@ -7,4 +7,13 @@
         <item name="colorAccent">@color/teal_200</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="AppTheme.MaterialTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/yellow</item>
+        <item name="colorBackgroundFloating">@color/yellow</item>
+        <item name="colorAccent">@color/white</item>
+        <item name="android:singleLine">true</item>
+    </style>
 </resources>

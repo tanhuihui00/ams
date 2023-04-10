@@ -42,4 +42,16 @@
         android:layout_below="@id/idTVHeading"
         android:id="@+id/idBtnGenerateQR"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_back"
+        android:layout_marginEnd="20dp"
+        android:text="Scan QR Code"
+        android:textAllCaps="false"
+        android:layout_below="@id/idBtnGenerateQR"
+        android:id="@+id/idbtnScanQR"/>
+
 </RelativeLayout>
