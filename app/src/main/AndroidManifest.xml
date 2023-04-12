@@ -15,6 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AttendanceManagementApplication">
         <activity
+            android:name=".AttendanceDetails"
+            android:exported="false" />
+        <activity
+            android:name=".StudentViewAttendance"
+            android:exported="false" />
+        <activity
             android:name=".TeacherViewAttendance"
             android:exported="false" />
         <activity
