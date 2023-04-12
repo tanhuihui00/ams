@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AttendanceManagementApplication">
         <activity
+            android:name=".TeacherViewAttendance"
+            android:exported="false" />
+        <activity
             android:name=".ScanQRCodeActivity"
             android:exported="false" />
         <activity
