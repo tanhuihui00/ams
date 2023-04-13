@@ -7,12 +7,12 @@
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/drawable/ic_launcher_background.xml" value="0.14322916666666666" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_generate_qrcode.xml" value="0.1" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_generate_scan_qr.xml" value="0.264" />
-        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_maps.xml" value="0.2359375" />
-        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrcode_generator.xml" value="0.264" />
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrcode_generator.xml" value="0.1" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrcode_scanner.xml" value="0.1" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrpage.xml" value="0.264" />
-        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrscan_from_fragment.xml" value="0.1" />
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrscan_from_fragment.xml" value="0.4" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_scan_qrcode.xml" value="0.1" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_track_user_location.xml" value="0.12708333333333333" />
         <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_face_recognition.xml" value="0.2717391304347826" />
