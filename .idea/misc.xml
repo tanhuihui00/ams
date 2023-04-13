@@ -11,7 +11,7 @@
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_maps.xml" value="0.2359375" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrcode_generator.xml" value="0.264" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrcode_scanner.xml" value="0.1" />
-        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrpage.xml" value="0.1" />
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrpage.xml" value="0.264" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrscan_from_fragment.xml" value="0.1" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_scan_qrcode.xml" value="0.1" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_track_user_location.xml" value="0.12708333333333333" />
@@ -21,18 +21,6 @@
         <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_maps.xml" value="0.264" />
         <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_track_location.xml" value="0.25679347826086957" />
         <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_track_user_location.xml" value="0.25679347826086957" />
-        <entry key="..\:/ams/app/src/main/res/drawable/ic_baseline_date_24.xml" value="0.2537037037037037" />
-        <entry key="..\:/ams/app/src/main/res/drawable/ic_baseline_date_range_24.xml" value="0.2537037037037037" />
-        <entry key="..\:/ams/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.2537037037037037" />
-        <entry key="..\:/ams/app/src/main/res/drawable/ic_baseline_save_alt_24.xml" value="0.2537037037037037" />
-        <entry key="..\:/ams/app/src/main/res/drawable/list_item_selector.xml" value="0.2537037037037037" />
-        <entry key="..\:/ams/app/src/main/res/layout/activity_attendance_details.xml" value="0.25" />
-        <entry key="..\:/ams/app/src/main/res/layout/activity_student_view_attendance.xml" value="0.25" />
-        <entry key="..\:/ams/app/src/main/res/layout/activity_teacher_view_attendance.xml" value="0.2359375" />
-        <entry key="..\:/ams/app/src/main/res/layout/attendance_item.xml" value="0.25" />
-        <entry key="..\:/ams/app/src/main/res/layout/edit_dialog.xml" value="0.2111111111111111" />
-        <entry key="..\:/ams/app/src/main/res/layout/list_item.xml" value="0.2111111111111111" />
-        <entry key="..\:/ams/app/src/main/res/layout/student_list_item.xml" value="0.25" />
       </map>
     </option>
   </component>
