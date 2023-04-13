@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="my.edu.utar.attendancemanagementapplication">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -16,8 +17,18 @@
             android:name=".QRPage"
             android:exported="false" />
         <activity
-            android:name=".QRScanFromFragment"
+            android:name=".AttendanceDetails"
             android:exported="false" />
+        <activity
+            android:name=".StudentViewAttendance"
+            android:exported="false" />
+        <activity
+            android:name=".TeacherViewAttendance"
+            android:exported="false" />
+        <activity
+            android:name=".QRScanFromFragment"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".QRCodeScanner"
             android:exported="false" />
