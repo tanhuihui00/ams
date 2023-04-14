@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         QRBtn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, QRCodeGenerator.class);
+                Intent intent = new Intent(MainActivity.this, QRPage.class);
                 startActivity(intent);
             }
         });

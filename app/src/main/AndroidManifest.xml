@@ -18,7 +18,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AttendanceManagementApplication">
-        
+        <activity
+            android:name=".QRScanFromFragment"
+            android:exported="false" />
+        <activity
+            android:name=".QRPage"
+            android:exported="false" />
+        <activity
+            android:name=".QRCodeScanner"
+            android:exported="false" />
         <activity
             android:name=".AttendanceDetails"
             android:exported="false" />
