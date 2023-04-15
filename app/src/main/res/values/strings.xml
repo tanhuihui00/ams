@@ -4,8 +4,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btn_invokeqrscan">btn_invokeQRScan</string>
-    <string name="press_to_scan">Press to Scan</string>
-    <string name="press_to_generate_qr_code">Press to Generate QR Code</string>
+    <string name="press_to_scan">Scan QR code</string>
+    <string name="press_to_generate_qr_code">Generate QR Code</string>
     ===
     <string name="apikey">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlenZjZGttZ3drdXdsbW1ra2x1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODAyMjU0NjEsImV4cCI6MTk5NTgwMTQ2MX0.tY1oOKFomdqdQk_WQzg1W2kr56dIZM-NXuYTVeweYBE</string>
     <string name="export_pdf">Export PDF</string>

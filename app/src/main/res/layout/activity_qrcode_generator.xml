@@ -1,40 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="my.edu.utar.attendancemanagementapplication.QRCodeGenerator">
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_weight="70"
-        android:layout_marginHorizontal="30dp"
-        android:layout_above="@+id/btn_generateQR"
-        android:layout_height="wrap_content"
-        android:id="@+id/et_qr_source"/>
-    <Button
-        android:id="@+id/btn_generateQR"
-        android:layout_alignParentBottom="true"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/session_name_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="60dp"
-        android:text="Generate QR"/>
-    <View
+        android:text="Session Name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <EditText
+        android:id="@+id/session_name_edittext"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        />
-    <LinearLayout
-        android:layout_above="@+id/et_qr_source"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/session_name_label"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:inputType="text"
+        android:hint="Enter session name"/>
+
+    <TextView
+        android:id="@+id/session_date_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Session Date"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:layout_below="@id/session_name_edittext"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <EditText
+        android:id="@+id/session_date_edittext"
         android:layout_width="match_parent"
-        android:layout_height="250dp">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/iv_qrcode"
-            />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/session_date_label"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:inputType="text"
+        android:hint="Choose a Date"/>
+
+    <TextView
+        android:id="@+id/session_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Session Time"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:layout_below="@id/session_date_edittext"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <EditText
+        android:id="@+id/session_time_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/session_time_label"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:inputType="text"
+        android:hint="Choose a Time"/>
+
+    <Button
+        android:id="@+id/create_session_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/session_time_edittext"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Create Session"/>
+
+    <Button
+        android:id="@+id/generate_qr_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/create_session_button"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="242dp"
+        android:text="Generate QR Code" />
+
+    <ImageView
+        android:id="@+id/qr_code_imageview"
+        android:layout_width="374dp"
+        android:layout_height="240dp"
+        android:layout_below="@id/generate_qr_button"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside" />
+
+    <Button
+        android:id="@+id/store_qr_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/create_session_button"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="15dp"
+        android:text="Store QR Code" />
+
 </RelativeLayout>

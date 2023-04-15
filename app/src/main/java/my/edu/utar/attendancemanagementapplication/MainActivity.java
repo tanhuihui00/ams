@@ -15,19 +15,28 @@ public class MainActivity extends AppCompatActivity {
 
         Button mapBtn = findViewById(R.id.mapButton);
         Button QRBtn = findViewById(R.id.QRButton);
+        Button ScanQRBtn = findViewById(R.id.ScanQRButton);
 
-        /*mapBtn.setOnClickListener(new View.OnClickListener() {
+        mapBtn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(intent);
             }
-        });*/
+        });
 
         QRBtn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, QRPage.class);
+                Intent intent = new Intent(MainActivity.this, QRCodeGenerator.class);
+                startActivity(intent);
+            }
+        });
+
+        ScanQRBtn.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, QRCodeScanner.class);
                 startActivity(intent);
             }
         });

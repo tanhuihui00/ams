@@ -16,6 +16,14 @@
         android:id="@+id/QRButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="QR Code" />
+        android:layout_below="@id/mapButton"
+        android:text="Generate QR Code" />
+
+    <Button
+        android:id="@+id/ScanQRButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/QRButton"
+        android:text="Scan QR Code" />
 
 </RelativeLayout>

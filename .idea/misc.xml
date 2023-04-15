@@ -13,14 +13,16 @@
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/drawable/pick_image_foreground.xml" value="0.12222222222222222" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_generate_qrcode.xml" value="0.1" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_generate_scan_qr.xml" value="0.264" />
-        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_main.xml" value="0.4" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_maps.xml" value="0.2359375" />
-        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrcode_generator.xml" value="0.1" />
-        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrcode_scanner.xml" value="0.1" />
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrcode_generator.xml" value="0.2" />
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrcode_scanner.xml" value="0.2" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrpage.xml" value="0.264" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrscan_from_fragment.xml" value="0.4" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_scan_qrcode.xml" value="0.1" />
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_student_view_attendance.xml" value="0.23505434782608695" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_track_user_location.xml" value="0.12708333333333333" />
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/attendance_item.xml" value="0.23505434782608695" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/fragement_qrscan.xml" value="0.1" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/fragment_qrscan.xml" value="0.25" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/mipmap-anydpi-v26/pick_image.xml" value="0.14322916666666666" />
