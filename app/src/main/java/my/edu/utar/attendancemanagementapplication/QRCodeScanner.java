@@ -1,9 +1,8 @@
 package my.edu.utar.attendancemanagementapplication;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -12,8 +11,6 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -39,7 +36,7 @@ public class QRCodeScanner extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode,resultCode, data);
 
         if (result != null){
@@ -54,7 +51,7 @@ public class QRCodeScanner extends AppCompatActivity {
                 String sessionId = result.getContents();
 
                 //show the message with the current time
-                String message = "Session ID " + sessionId + "\nScanned at: " + currentTime;
+                String message = "Attendance ID " + sessionId + "\nYou have successfully Scanned the attendance at: " + currentTime;
                 //Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
                 //update the TextView with the message and current time
