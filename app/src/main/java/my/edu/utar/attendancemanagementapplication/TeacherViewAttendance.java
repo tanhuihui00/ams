@@ -2,6 +2,7 @@ package my.edu.utar.attendancemanagementapplication;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -196,7 +197,6 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
 
     class fetchData extends Thread
     {
-
         @Override
         public void run(){
             handler.post(() -> {
@@ -236,8 +236,9 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
                         }
                         Log.d("tag",output);
 
-                    }else {
-                        Toast.makeText(getApplicationContext(), "No record found", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(TeacherViewAttendance.this, "No record found", Toast.LENGTH_SHORT).show();
+
                     }
                 }else{
                     Log.d("tag",""+hc.getResponseCode());
@@ -252,8 +253,11 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
                     progressDialog.dismiss();
                     listAdapter.notifyDataSetChanged();
                 }
+
+
             });
         }
+
     }
 
 
