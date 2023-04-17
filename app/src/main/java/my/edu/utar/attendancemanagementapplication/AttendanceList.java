@@ -278,7 +278,6 @@ public class AttendanceList extends AppCompatActivity {
     public void retrieveSessionInfo(View view) {
         //retrieve particular one attendance session record
         String retrievedAttendanceID = view.getTag().toString();
-        Log.e("TAG", "retrieveSessionInfo: "+retrievedAttendanceID);
 
         Intent intent = new Intent(this, CreateSessionActivity.class);
         intent.putExtra("retrievedAttendanceID", retrievedAttendanceID);
@@ -288,5 +287,10 @@ public class AttendanceList extends AppCompatActivity {
 
     public void generateQrCode(View view) {
         //go to generateQr Module
+        String retrievedAttendanceID = view.getTag().toString();
+
+        Intent intent = new Intent(this, QRCodeGenerator.class);
+        intent.putExtra("retrievedAttendanceID", retrievedAttendanceID);
+        startActivity(intent);
     }
 }
