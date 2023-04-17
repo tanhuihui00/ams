@@ -48,12 +48,12 @@ public class AttendanceList extends AppCompatActivity {
 
         parentLayout = findViewById(R.id.linearView);
 
-        if(username != "" && loggedIn != false && userRole.equals("lecturer")){
+        if(username != "" && loggedIn != false && userRole.equalsIgnoreCase("lecturer")){
             Handler handler = new Handler();
             MyThread connectThread = new MyThread(handler, "retrieveAllRecord");
             connectThread.start();
         }else{
-            if(userRole.equals("student")){
+            if(userRole.equalsIgnoreCase("student")){
                 Toast.makeText(getApplicationContext(),"You don't have the permission to access this page.",Toast.LENGTH_SHORT).show();
                 Intent intent =new Intent(AttendanceList.this, MainActivity2.class);
                 startActivity(intent);

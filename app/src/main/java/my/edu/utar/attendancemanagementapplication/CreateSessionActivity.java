@@ -53,7 +53,7 @@ public class CreateSessionActivity extends AppCompatActivity {
         userRole = retrievePrefs.getString("role", "");
         loggedIn = retrievePrefs.getBoolean("loggedIn", false);
 
-        if(username != "" && loggedIn != false && userRole.equals("lecturer")){
+        if(username != "" && loggedIn != false && userRole.equalsIgnoreCase("lecturer")){
 
             mSubjectEditText = findViewById(R.id.session_subject);
             mGroupEditText = findViewById(R.id.session_group);
@@ -107,7 +107,7 @@ public class CreateSessionActivity extends AppCompatActivity {
             });
 
         }else{
-            if(userRole.equals("student")){
+            if(userRole.equalsIgnoreCase("student")){
                 Toast.makeText(getApplicationContext(),"You don't have the permission to access this page.",Toast.LENGTH_SHORT).show();
                 Intent intent =new Intent(CreateSessionActivity.this, MainActivity2.class);
                 startActivity(intent);
