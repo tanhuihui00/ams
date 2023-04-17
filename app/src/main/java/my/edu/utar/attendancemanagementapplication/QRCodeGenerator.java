@@ -33,7 +33,7 @@ public class QRCodeGenerator extends AppCompatActivity {
     private ImageView qrCodeImageView;
     private Spinner attendanceIdSpinner;
     private Button generateQrCodeButton;
-   
+
 
     private static final String SUPABASE_URL = "https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/Attendances?select=attendanceID";
 
