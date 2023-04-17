@@ -62,6 +62,8 @@
         <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/fragment_qrscan.xml" value="0.11041666666666666" />
         <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/list_item.xml" value="0.11041666666666666" />
         <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/student_list_item.xml" value="0.11041666666666666" />
+        <entry key="..\:/ams/app/src/main/res/layout/activity_attendance_details.xml" value="0.2111111111111111" />
+        <entry key="..\:/ams/app/src/main/res/layout/activity_teacher_view_attendance.xml" value="0.25" />
       </map>
     </option>
   </component>

@@ -14,6 +14,9 @@ import android.os.StrictMode;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -54,7 +57,9 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
 
     EditText classcode;
     ListView lv;
+    ArrayList<String> typelist=new ArrayList<>();
     ArrayList<String> attendanceidlist=new ArrayList<>();
+    ArrayAdapter<String> adapter;
     ActivityTeacherViewAttendanceBinding binding;
     ListAdapter listAdapter;
     String currentdate,type,statusshow,id,attendanceidget,code;
@@ -73,6 +78,50 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
         setContentView(binding.getRoot());
         listAdapter=new ListAdapter(TeacherViewAttendance.this,studentsArrayList,getSupportFragmentManager(),this);
         binding.lv.setAdapter(listAdapter);
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, typelist);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.classcode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String classcode=binding.classcode.getText().toString();
+                if(!classcode.isEmpty()){
+                    new getListofType().start();
+                    binding.typespinner.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+
+
+                }else{
+                    Toast.makeText(TeacherViewAttendance.this, "Class code is empty", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        binding.typespinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                type = adapterView.getItemAtPosition(i).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
         binding.searchbutton.setOnClickListener(view -> {
             try{
@@ -116,20 +165,7 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
             }
 
         });
-        ArrayAdapter<CharSequence> adapter=ArrayAdapter.createFromResource(TeacherViewAttendance.this,R.array.type, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.typespinner.setAdapter(adapter);
-        binding.typespinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                type=adapterView.getItemAtPosition(i).toString();
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
 
     @Override
@@ -155,7 +191,6 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
     @Override
     public void onClick(String value) {
         position = value;
-        Toast.makeText(TeacherViewAttendance.this, position, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -171,7 +206,7 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
                 progressDialog.show();
             });
             try {
-                URL url=new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/Session?select=status,attendanceID,userID,Students(Name),Attendance(subjectCode)&Attendance.subjectCode=eq."+classcode.getText().toString()+"&takenDate=eq."+currentdate+"&Attendance.type=eq."+type);
+                URL url=new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/Session?select=status,attendanceID,userID,Student(name),Attendances(subjectCode)&Attendances.subjectCode=eq."+classcode.getText().toString()+"&takenDate=eq."+currentdate+"&Attendances.type=eq."+type);
                 HttpURLConnection hc= (HttpURLConnection) url.openConnection();
 
                 hc.setRequestProperty("apikey",getString(R.string.apikey));
@@ -189,9 +224,9 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
                         studentsArrayList.clear();
                         attendanceidlist.clear();
                         for(int i=0;i<jsonArray.length();i++){
-                            output=output+jsonArray.getJSONObject(i).getJSONObject("Students").get("Name").toString()+" "+jsonArray.getJSONObject(i).get("userID").toString()+" "+
+                            output=output+jsonArray.getJSONObject(i).getJSONObject("Student").get("name").toString()+" "+jsonArray.getJSONObject(i).get("userID").toString()+" "+
                                     jsonArray.getJSONObject(i).get("status").toString()+jsonArray.getJSONObject(i).get("attendanceID").toString();
-                            String name=jsonArray.getJSONObject(i).getJSONObject("Students").get("Name").toString();
+                            String name=jsonArray.getJSONObject(i).getJSONObject("Student").get("name").toString();
                             String id=jsonArray.getJSONObject(i).get("userID").toString();
                             String status=jsonArray.getJSONObject(i).get("status").toString();
                             String attendanceID=jsonArray.getJSONObject(i).get("attendanceID").toString();
@@ -201,6 +236,8 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
                         }
                         Log.d("tag",output);
 
+                    }else{
+                        Toast.makeText(TeacherViewAttendance.this, "No record found", Toast.LENGTH_SHORT).show();
                     }
                 }else{
                     Log.d("tag",""+hc.getResponseCode());
@@ -279,7 +316,6 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
 
     }
 
-
     class updateData extends Thread{
         HttpURLConnection hc;
         @Override
@@ -326,4 +362,46 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
 
 
     }
+
+
+    class getListofType extends Thread{
+        HttpURLConnection hc;
+        @Override
+        public void run() {
+            try {
+                URL url=new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/Attendances?select=type&subjectCode=eq."+binding.classcode.getText().toString());
+                HttpURLConnection hc= (HttpURLConnection) url.openConnection();
+
+                hc.setRequestProperty("apikey",getString(R.string.apikey));
+                hc.setRequestProperty("Authorization","Bearer "+getString(R.string.apikey));
+                Log.i("tag",url.toString());
+                InputStream input=hc.getInputStream();
+                String result=readStream(input);
+                if(hc.getResponseCode()==200){
+                    Log.d("tag","Response Successful");
+                    Log.d("result",result);
+
+                    if(!result.isEmpty()){
+                        JSONArray jsonArray=new JSONArray(result);
+                        String output="";
+                        typelist.clear();
+                        for(int i=0;i<jsonArray.length();i++){
+                            output=output+jsonArray.getJSONObject(i).get("type").toString()+" ";
+                            String types=jsonArray.getJSONObject(i).get("type").toString();
+                            typelist.add(types);
+                        }
+                        runOnUiThread(() -> adapter.notifyDataSetChanged());
+                        Log.d("tag", String.valueOf(typelist));
+
+                    }
+                }else{
+                    Log.d("tag",""+hc.getResponseCode());
+                }
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+                Log.d("tag",e.getMessage());
+            }
+        }
+    }
+
 }
