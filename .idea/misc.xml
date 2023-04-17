@@ -32,6 +32,36 @@
         <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_maps.xml" value="0.264" />
         <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_track_location.xml" value="0.25679347826086957" />
         <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_track_user_location.xml" value="0.25679347826086957" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/drawable/bg_view.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/drawable/ic_baseline_create_24.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/drawable/ic_baseline_local_phone_24.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/drawable/ic_baseline_lock_24.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/drawable/ic_baseline_note_add_24.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/drawable/ic_baseline_person_pin_24.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/drawable/ic_baseline_qr_code_scanner_24.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/drawable/ic_baseline_remove_red_eye_24.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/drawable/ic_baseline_table_view_24.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/drawable/lavender_border.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/activity_attendance_details.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/activity_attendance_list.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/activity_create_session.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/activity_login.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/activity_main.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/activity_main2.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/activity_qrcode_generator.xml" value="0.11041666666666666" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/activity_qrcode_scanner.xml" value="0.11041666666666666" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/activity_signup.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/activity_student_view_attendance.xml" value="0.1" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/activity_teacher_view_attendance.xml" value="0.11041666666666666" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/activity_test.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/activity_track_user_location.xml" value="0.11041666666666666" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/attendance_item.xml" value="0.11041666666666666" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/edit_dialog.xml" value="0.11041666666666666" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/fragment_qrscan.xml" value="0.11041666666666666" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/list_item.xml" value="0.11041666666666666" />
+        <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/student_list_item.xml" value="0.11041666666666666" />
       </map>
     </option>
   </component>

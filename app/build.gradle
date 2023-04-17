@@ -31,21 +31,21 @@ android {
     }
 }
 
-dependencies {
-    implementation 'com.google.android.gms:play-services-maps:16.1.0'
 
-    //QR part
-    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
-    implementation 'com.android.support:support-v4:26.1.0'
-    implementation 'com.google.code.gson:gson:2.8.8'
-
-    //noinspection GradleCompatible
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
-    testImplementation 'junit:junit:4.+'
-    implementation 'com.itextpdf:itextpdf:5.5.13.1'
-    //noinspection GradleCompatible
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    //implementation 'com.google.zxing:core:3.3.0'
-}
+    dependencies {
+        implementation 'com.google.android.gms:play-services-maps:17.0.1'
+        implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+        implementation 'androidx.legacy:legacy-support-v4:1.0.0' // replace com.android.support:support-v4:26.1.0
+        implementation 'com.google.code.gson:gson:2.8.8'
+        implementation 'androidx.appcompat:appcompat:1.3.1' // replace com.android.support:appcompat-v7:28.0.0
+        implementation 'androidx.constraintlayout:constraintlayout:2.1.0' // replace com.android.support.constraint:constraint-layout:2.0.4
+        implementation 'junit:junit:4.13.2'
+        implementation 'com.itextpdf:itextpdf:5.5.13.2' // replace com.itextpdf:itextpdf:5.5.13.1
+        implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+        implementation 'androidx.cardview:cardview:1.0.0'
+        implementation 'com.google.android.material:material:1.4.0' // replace com.android.support:design:28.0.0
+        implementation 'androidx.test.espresso:espresso-core:3.4.0' // replace com.android.support.test.espresso:espresso-core:3.0.2
+        implementation 'androidx.test.ext:junit:1.1.3' // replace com.android.support.test.ext:junit:1.0.2
+        implementation 'androidx.test:runner:1.4.0' // replace com.android.support.test:runner:1.0.2
+        implementation 'com.google.zxing:core:3.4.1'
+    }

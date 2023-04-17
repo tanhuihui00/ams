@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AttendanceList">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--Header-->
+        <TextView
+            android:id="@+id/AttendanceListTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Attendance List"
+            android:textSize="20sp"
+            android:gravity="center_horizontal"/>
+
+        <!--Attendance List-->
+        <ScrollView
+            android:id="@+id/listScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/linearView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <!--Attendance List-->
+
+    </LinearLayout>
+</LinearLayout>

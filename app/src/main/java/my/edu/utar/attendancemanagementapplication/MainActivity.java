@@ -1,10 +1,14 @@
 package my.edu.utar.attendancemanagementapplication;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,31 +17,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button mapBtn = findViewById(R.id.mapButton);
-        Button QRBtn = findViewById(R.id.QRButton);
-        Button ScanQRBtn = findViewById(R.id.ScanQRButton);
-
-        mapBtn.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+        Button createSessionButton = findViewById(R.id.create_session_button);
+        createSessionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, CreateSessionActivity.class);
                 startActivity(intent);
             }
         });
 
-        QRBtn.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, QRCodeGenerator.class);
+        Button modifySessionButton = findViewById(R.id.modify_session_button);
+        modifySessionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AttendanceList.class);
                 startActivity(intent);
             }
         });
 
-        ScanQRBtn.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, QRCodeScanner.class);
-                startActivity(intent);
+        Button viewReportButton = findViewById(R.id.view_report_button);
+        viewReportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Add code to launch the view report activity here
             }
         });
     }
