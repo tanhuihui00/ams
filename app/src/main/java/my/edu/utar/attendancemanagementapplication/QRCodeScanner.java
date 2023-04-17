@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,43 +53,18 @@ public class QRCodeScanner extends AppCompatActivity {
 
         if (result != null){
             if(result.getContents()==null){
-                Toast.makeText(this, "QR Code Scan Cancelled",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "QR Code Scan Cancelled.",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(QRCodeScanner.this, MainActivity2.class);
+                startActivity(intent);
+                finish();
             }else{
-                //get the current date and time
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm a", Locale.getDefault());
-                String currentTime = sdf.format(new Date());
+                //get the session ID
+                String sessionId = result.getContents();
 
-                String attendanceId = getIntent().getStringExtra("attendanceId");
-
-                try {
-                    URL url = new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/Attendances?select=subjectCode,type&attendanceID=eq"+ attendanceId);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("GET");
-                    conn.setRequestProperty("Accept", "application/json");
-                    if (conn.getResponseCode() != 200) {
-                        throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
-                    }
-                    BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-                    String output;
-                    String subjectCode = "";
-                    String type = "";
-                    while ((output = br.readLine()) != null) {
-                        JSONObject json = new JSONObject(output);
-                        subjectCode = json.getString("subjectCode");
-                        type = json.getString("type");
-                    }
-                    conn.disconnect();
-
-                    //show the message with the current time, subject code, and type
-                    String message = "Subject Code: " + subjectCode + "\nType: " + type + "\nYou have successfully scanned the attendance at: " + currentTime;
-                    qrMessageTextView.setText(message);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                Intent intent = new Intent(QRCodeScanner.this, TrackUserLocation.class);
+                intent.putExtra("sessionId", sessionId);
+                startActivity(intent);
+                finish();
             }
         }else {
             super.onActivityResult(requestCode, resultCode, data);
