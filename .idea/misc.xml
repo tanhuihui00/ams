@@ -11,16 +11,20 @@
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/drawable/list_item_selector.xml" value="0.12222222222222222" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/drawable/pick_image_background.xml" value="0.12222222222222222" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/drawable/pick_image_foreground.xml" value="0.12222222222222222" />
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_attendance_list.xml" value="0.25" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_generate_qrcode.xml" value="0.1" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_generate_scan_qr.xml" value="0.264" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_main2.xml" value="0.25" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_maps.xml" value="0.2359375" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrcode_generator.xml" value="0.1" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrcode_scanner.xml" value="0.2" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrpage.xml" value="0.264" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_qrscan_from_fragment.xml" value="0.4" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_scan_qrcode.xml" value="0.1" />
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_signup.xml" value="0.25" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_student_view_attendance.xml" value="0.23505434782608695" />
+        <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_test.xml" value="0.1" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/activity_track_user_location.xml" value="0.12708333333333333" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/attendance_item.xml" value="0.23505434782608695" />
         <entry key="..\:/Mobile Group Assignment/ams/app/src/main/res/layout/fragement_qrscan.xml" value="0.1" />
@@ -29,14 +33,7 @@
         <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_face_recognition.xml" value="0.2717391304347826" />
         <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_face_tracker.xml" value="0.26811594202898553" />
         <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_main.xml" value="0.192481884057971" />
-        <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_main2.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_maps.xml" value="0.264" />
-
-
-        <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_qrcode_generator.xml" value="0.27447916666666666" />
-        <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_qrcode_scanner.xml" value="0.27447916666666666" />
-        <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_test.xml" value="0.27447916666666666" />
-
         <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_track_location.xml" value="0.25679347826086957" />
         <entry key="..\:/Users/Tan Hui Hui/Desktop/ams/app/src/main/res/layout/activity_track_user_location.xml" value="0.25679347826086957" />
         <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/drawable/bg_view.xml" value="0.22592592592592592" />
@@ -69,15 +66,6 @@
         <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/fragment_qrscan.xml" value="0.11041666666666666" />
         <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/list_item.xml" value="0.11041666666666666" />
         <entry key="..\:/Users/user/Documents/GitHub/ams/app/src/main/res/layout/student_list_item.xml" value="0.11041666666666666" />
-        <entry key="..\:/ams/app/src/main/res/drawable/listteacher_background.xml" value="0.26614583333333336" />
-        <entry key="..\:/ams/app/src/main/res/layout/activity_attendance_details.xml" value="0.2111111111111111" />
-        <entry key="..\:/ams/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/ams/app/src/main/res/layout/activity_main2.xml" value="0.25" />
-        <entry key="..\:/ams/app/src/main/res/layout/activity_student_view_attendance.xml" value="0.25" />
-        <entry key="..\:/ams/app/src/main/res/layout/activity_teacher_view_attendance.xml" value="0.25" />
-        <entry key="..\:/ams/app/src/main/res/layout/attendance_item.xml" value="0.25" />
-        <entry key="..\:/ams/app/src/main/res/layout/list_item.xml" value="0.2111111111111111" />
-        <entry key="..\:/ams/app/src/main/res/layout/student_list_item.xml" value="0.25" />
       </map>
     </option>
   </component>

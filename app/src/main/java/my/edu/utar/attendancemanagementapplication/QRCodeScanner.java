@@ -11,6 +11,15 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -43,19 +52,41 @@ public class QRCodeScanner extends AppCompatActivity {
             if(result.getContents()==null){
                 Toast.makeText(this, "QR Code Scan Cancelled",Toast.LENGTH_SHORT).show();
             }else{
-                //get the current time
-                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+                //get the current date and time
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm a", Locale.getDefault());
                 String currentTime = sdf.format(new Date());
 
-                //get the session ID
-                String sessionId = result.getContents();
+                String attendanceId = getIntent().getStringExtra("attendanceId");
 
-                //show the message with the current time
-                String message = "Attendance ID " + sessionId + "\nYou have successfully Scanned the attendance at: " + currentTime;
-                //Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                try {
+                    URL url = new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/Attendances?select=subjectCode,type&attendanceID=eq"+ attendanceId);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setRequestProperty("Accept", "application/json");
+                    if (conn.getResponseCode() != 200) {
+                        throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+                    }
+                    BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+                    String output;
+                    String subjectCode = "";
+                    String type = "";
+                    while ((output = br.readLine()) != null) {
+                        JSONObject json = new JSONObject(output);
+                        subjectCode = json.getString("subjectCode");
+                        type = json.getString("type");
+                    }
+                    conn.disconnect();
 
-                //update the TextView with the message and current time
-                qrMessageTextView.setText(message);
+                    //show the message with the current time, subject code, and type
+                    String message = "Subject Code: " + subjectCode + "\nType: " + type + "\nYou have successfully scanned the attendance at: " + currentTime;
+                    qrMessageTextView.setText(message);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }else {
             super.onActivityResult(requestCode, resultCode, data);

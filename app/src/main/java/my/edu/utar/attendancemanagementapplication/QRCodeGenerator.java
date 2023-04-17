@@ -1,6 +1,7 @@
 package my.edu.utar.attendancemanagementapplication;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -50,9 +51,16 @@ public class QRCodeGenerator extends AppCompatActivity {
         //retrieve the attendanceID from the database
         //new RetrieveAttendanceIdsTask().execute();
 
-        String retrievedAttendanceID = getIntent().getStringExtra("retrievedAttendanceID");
+        String attendanceId = getIntent().getStringExtra("retrievedAttendanceID");
 
-        String attendanceId = retrievedAttendanceID;
+        // create an Intent to start the QRCodeScanner activity
+        Intent intent = new Intent(QRCodeGenerator.this, QRCodeScanner.class);
+
+        // add the attendanceId as an extra in the Intent
+        intent.putExtra("attendanceId", attendanceId);
+
+        // start the QRCodeScanner activity
+        startActivity(intent);
 
         // generate the QR code
         Bitmap qrCode = generateQrCode(attendanceId);
