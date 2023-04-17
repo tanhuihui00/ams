@@ -1,5 +1,7 @@
 package my.edu.utar.attendancemanagementapplication;
 
+
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 
 public class AttendanceList extends AppCompatActivity {
 

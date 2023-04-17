@@ -143,10 +143,11 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
     public void goToDashboardPage(){
+        // Retrieve login details
         SharedPreferences prefs = getSharedPreferences("login_prefs", MODE_PRIVATE);
-        String role = prefs.getString("role", "Student");
+        String role = prefs.getString("role", "");
 
-        Class<?> targetActivity = role.equals("Student") ? MainActivity2.class : MainActivity.class;
+        Class<?> targetActivity = role.equalsIgnoreCase("student") ? MainActivity2.class : MainActivity.class;
         Intent intent = new Intent(LoginActivity.this, targetActivity);
         startActivity(intent);
     }
