@@ -2,6 +2,7 @@ package my.edu.utar.attendancemanagementapplication;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,6 +26,7 @@ public class StudentViewAttendance extends AppCompatActivity {
     ActivityStudentViewAttendanceBinding binding;
     Handler handler=new Handler();
     ListAdapterStudent listAdapter;
+    String userid,name;
     ArrayList<StudentOverallAttendance> attendances=new ArrayList<>();
     ProgressDialog progressDialog;
     @Override
@@ -32,25 +34,25 @@ public class StudentViewAttendance extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding= ActivityStudentViewAttendanceBinding.inflate(getLayoutInflater());
         listAdapter=new ListAdapterStudent(StudentViewAttendance.this,attendances);
+
         binding.studentlistview.setAdapter(listAdapter);
         binding.studentlistview.setClickable(true);
+        SharedPreferences retrievePrefs = getSharedPreferences("login_prefs", MODE_PRIVATE);
+        userid = retrievePrefs.getString("username", "");
+        name=retrievePrefs.getString("name","");
+        binding.name.setText(name);
+        binding.idtext.setText(userid);
         binding.studentlistview.setOnItemClickListener((adapterView, view, i, l) -> {
             Intent intent=new Intent(StudentViewAttendance.this,AttendanceDetails.class);
             StudentOverallAttendance studentOverallAttendance=attendances.get(i);
             intent.putExtra("classcode",studentOverallAttendance.getClasscode());
             intent.putExtra("type",studentOverallAttendance.getType());
-            intent.putExtra("id",binding.idnum.getText().toString());
+            intent.putExtra("id",userid);
             startActivity(intent);
         });
         setContentView(binding.getRoot());
+        new getAttendance().start();
 
-        binding.checkbtn.setOnClickListener(view -> {
-            if(binding.idnum.getText().toString()!=""){
-                new getAttendance().start();
-            }else{
-                Toast.makeText(StudentViewAttendance.this, "Please fill in student id", Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
     class getAttendance extends Thread
@@ -65,7 +67,7 @@ public class StudentViewAttendance extends AppCompatActivity {
                 progressDialog.show();
             });
             try {
-                URL url=new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/getoverallattendance?select=subjectCode,type,count&studentid=eq."+binding.idnum.getText().toString());
+                URL url=new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/getoverallattendance?select=subjectCode,type,count&studentid=eq."+userid);
                 HttpURLConnection hc= (HttpURLConnection) url.openConnection();
 
 

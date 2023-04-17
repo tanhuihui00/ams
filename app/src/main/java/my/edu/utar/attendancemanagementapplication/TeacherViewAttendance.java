@@ -236,8 +236,8 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
                         }
                         Log.d("tag",output);
 
-                    }else{
-                        Toast.makeText(TeacherViewAttendance.this, "No record found", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getApplicationContext(), "No record found", Toast.LENGTH_SHORT).show();
                     }
                 }else{
                     Log.d("tag",""+hc.getResponseCode());

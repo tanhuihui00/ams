@@ -114,6 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                                         editor.putString("username", jsonArray.getJSONObject(0).get("userID").toString());
                                         editor.putString("role", jsonArray.getJSONObject(0).get("role").toString());
                                         editor.putBoolean("loggedIn", true);
+                                        editor.putString("name",jsonArray.getJSONObject(0).get("name").toString());
                                         editor.commit();
 
                                         goToDashboardPage();

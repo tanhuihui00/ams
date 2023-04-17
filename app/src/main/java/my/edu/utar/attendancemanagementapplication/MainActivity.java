@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Add code to launch the view report activity here
+                Intent intent = new Intent(MainActivity.this, TeacherViewAttendance.class);
+                startActivity(intent);
             }
         });
     }
