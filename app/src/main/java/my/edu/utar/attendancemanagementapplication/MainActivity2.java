@@ -15,6 +15,7 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+
         viewattendance=findViewById(R.id.view_attendance_button);
         viewattendance.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -23,5 +24,17 @@ public class MainActivity2 extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Button scanAttendanceBtn = findViewById(R.id.scan_attendance_button);
+        scanAttendanceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity2.this, QRCodeScanner.class);
+                startActivity(intent);
+            }
+        });
+
+        Button viewAttendanceBtn = findViewById(R.id.view_attendance_button);
+
+
     }
 }

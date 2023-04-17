@@ -1,6 +1,7 @@
 package my.edu.utar.attendancemanagementapplication;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -43,16 +44,34 @@ public class QRCodeGenerator extends AppCompatActivity {
         setContentView(R.layout.activity_qrcode_generator);
 
         qrCodeImageView = findViewById(R.id.qr_code_image_view);
-        attendanceIdSpinner = findViewById(R.id.attendance_id_spinner);
-        generateQrCodeButton = findViewById(R.id.generate_qr_code_button);
+        //attendanceIdSpinner = findViewById(R.id.attendance_id_spinner);
+        //generateQrCodeButton = findViewById(R.id.generate_qr_code_button);
 
         //retrieve the attendanceID from the database
-        new RetrieveAttendanceIdsTask().execute();
+        //new RetrieveAttendanceIdsTask().execute();
+
+        String retrievedAttendanceID = getIntent().getStringExtra("retrievedAttendanceID");
+
+        String attendanceId = retrievedAttendanceID;
+
+        // generate the QR code
+        Bitmap qrCode = generateQrCode(attendanceId);
+
+        // display the QR code in the ImageView
+        qrCodeImageView.setImageBitmap(qrCode);
+
+        // show success dialog
+        showSuccessDialog(attendanceId);
+
+        /*
 
         generateQrCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String attendanceId = attendanceIdSpinner.getSelectedItem().toString();
+
+                String retrievedAttendanceID = getIntent().getStringExtra("retrievedAttendanceID");
+
+                String attendanceId = retrievedAttendanceID;
 
                 // generate the QR code
                 Bitmap qrCode = generateQrCode(attendanceId);
@@ -63,8 +82,9 @@ public class QRCodeGenerator extends AppCompatActivity {
                 // show success dialog
                 showSuccessDialog(attendanceId);
             }
-        });
+        });*/
 
+        /*
         // add an onItemSelectedListener to the Spinner
         attendanceIdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -77,10 +97,10 @@ public class QRCodeGenerator extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
+*/
 
     }
-
+/*
     private class RetrieveAttendanceIdsTask extends AsyncTask<Void, Void, List<String>> {
         @Override
         protected List<String> doInBackground(Void...voids) {
@@ -118,6 +138,7 @@ public class QRCodeGenerator extends AppCompatActivity {
             attendanceIdSpinner.setAdapter(adapter);
         }
     }
+    */
 
     private Bitmap generateQrCode(String attendanceId) {
         // create a QR code writer

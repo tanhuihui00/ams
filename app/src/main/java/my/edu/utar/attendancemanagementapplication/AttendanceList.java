@@ -48,12 +48,12 @@ public class AttendanceList extends AppCompatActivity {
 
         parentLayout = findViewById(R.id.linearView);
 
-        if(username != "" && loggedIn != false && userRole.equals("lecturer")){
+        if(username != "" && loggedIn != false && userRole.equalsIgnoreCase("lecturer")){
             Handler handler = new Handler();
             MyThread connectThread = new MyThread(handler, "retrieveAllRecord");
             connectThread.start();
         }else{
-            if(userRole.equals("student")){
+            if(userRole.equalsIgnoreCase("student")){
                 Toast.makeText(getApplicationContext(),"You don't have the permission to access this page.",Toast.LENGTH_SHORT).show();
                 Intent intent =new Intent(AttendanceList.this, MainActivity2.class);
                 startActivity(intent);
@@ -278,7 +278,6 @@ public class AttendanceList extends AppCompatActivity {
     public void retrieveSessionInfo(View view) {
         //retrieve particular one attendance session record
         String retrievedAttendanceID = view.getTag().toString();
-        Log.e("TAG", "retrieveSessionInfo: "+retrievedAttendanceID);
 
         Intent intent = new Intent(this, CreateSessionActivity.class);
         intent.putExtra("retrievedAttendanceID", retrievedAttendanceID);
@@ -288,5 +287,10 @@ public class AttendanceList extends AppCompatActivity {
 
     public void generateQrCode(View view) {
         //go to generateQr Module
+        String retrievedAttendanceID = view.getTag().toString();
+
+        Intent intent = new Intent(this, QRCodeGenerator.class);
+        intent.putExtra("retrievedAttendanceID", retrievedAttendanceID);
+        startActivity(intent);
     }
 }
