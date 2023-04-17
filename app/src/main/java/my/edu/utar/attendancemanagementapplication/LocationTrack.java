@@ -1,6 +1,7 @@
 package my.edu.utar.attendancemanagementapplication;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
@@ -13,6 +14,11 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
 import android.widget.Toast;
 
@@ -115,23 +121,21 @@ public class LocationTrack extends Service implements LocationListener {
 
         alertDialog.setTitle("GPS is not Enabled!");
 
-        alertDialog.setMessage("Do you want to turn on GPS?");
+        alertDialog.setMessage("Please enable your GPS location service in your settings to take the attendance.");
 
-        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 mContext.startActivity(intent);
-            }
-        });
 
-        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+                Intent intent2 = new Intent(String.valueOf(MainActivity2.class));
+                mContext.startActivity(intent2);
             }
         });
 
         alertDialog.show();
     }
+
 
 
     public void stopListener() {

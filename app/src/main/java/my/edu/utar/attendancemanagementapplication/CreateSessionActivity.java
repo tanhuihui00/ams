@@ -1,9 +1,12 @@
 package my.edu.utar.attendancemanagementapplication;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -14,6 +17,10 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONArray;
@@ -28,7 +35,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
+import com.google.android.gms.maps.model.LatLng;
 
 public class CreateSessionActivity extends AppCompatActivity {
 
@@ -82,6 +97,39 @@ public class CreateSessionActivity extends AppCompatActivity {
                 }
             });
 
+            // Define a contract to launch the activity and receive a result
+            ActivityResultLauncher<Intent> myActivityResultLauncher = registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult result) {
+                            if (result.getResultCode() == Activity.RESULT_OK) {
+                                Intent lecturerLocation = result.getData();
+                                location = lecturerLocation.getStringExtra("lecturerLocation");
+
+                                // Extract the latitude and longitude values from the string
+                                int startIndex = location.indexOf("(") + 1;
+                                int endIndex = location.indexOf(")");
+                                String[] latLngArray = location.substring(startIndex, endIndex).split(",");
+                                double myLatitude = Double.parseDouble(latLngArray[0].trim());
+                                double myLongitude = Double.parseDouble(latLngArray[1].trim());
+
+                                String address = getCompleteAddressString(myLatitude, myLongitude);
+                                mLocationEditText.setText(address);
+                            }
+                        }
+                    });
+
+
+            mLocationEditText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(CreateSessionActivity.this, MapsActivity.class);
+                    myActivityResultLauncher.launch(intent);
+
+                }
+            });
+
             delBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -98,7 +146,6 @@ public class CreateSessionActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     subject = mSubjectEditText.getText().toString();
                     group = mGroupEditText.getText().toString();
-                    location = mLocationEditText.getText().toString();
 
                     Handler handler = new Handler();
                     MyThread connectThread = new MyThread(username, subject, group, selectedD, selectedT, null, location, handler);
@@ -275,7 +322,8 @@ public class CreateSessionActivity extends AppCompatActivity {
 
                                 mSubjectEditText.setText(subject);
                                 mGroupEditText.setText(group);
-                                mLocationEditText.setText(location);
+
+                                mLocationEditText.setText(getCompleteAddressString(covertStringToLatLng(location).latitude, covertStringToLatLng(location).longitude));
                                 btnPickDateTime.setText(selectedD+", "+selectedT);
 
                             } catch (JSONException e) {
@@ -294,6 +342,19 @@ public class CreateSessionActivity extends AppCompatActivity {
                 Log.e("TAG", "IOException: "+e.getMessage() );
             }
         }
+    }
+
+    private LatLng covertStringToLatLng(String strLat){
+        // Extract the latitude and longitude values from the string
+        int startIndex = strLat.indexOf("(") + 1;
+        int endIndex = strLat.indexOf(")");
+        String[] latLngArray = strLat.substring(startIndex, endIndex).split(",");
+        double myLatitude = Double.parseDouble(latLngArray[0].trim());
+        double myLongitude = Double.parseDouble(latLngArray[1].trim());
+
+        LatLng result = new LatLng(myLatitude, myLongitude);
+
+        return result;
     }
 
     private String readStream(InputStream is) {
@@ -315,5 +376,26 @@ public class CreateSessionActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
+    }
+
+    public String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+
+                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i));
+                }
+                strAdd = strReturnedAddress.toString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this,"Cannot get address!",Toast.LENGTH_LONG).show();
+        }
+        return strAdd;
     }
 }

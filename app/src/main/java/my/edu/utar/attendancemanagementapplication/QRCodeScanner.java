@@ -5,6 +5,7 @@ import android.content.Intent;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,19 +44,24 @@ public class QRCodeScanner extends AppCompatActivity {
             if(result.getContents()==null){
                 Toast.makeText(this, "QR Code Scan Cancelled",Toast.LENGTH_SHORT).show();
             }else{
-                //get the current time
+                /*get the current time
                 SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.getDefault());
-                String currentTime = sdf.format(new Date());
+                String currentTime = sdf.format(new Date());*/
 
                 //get the session ID
                 String sessionId = result.getContents();
 
+                Intent intent = new Intent(QRCodeScanner.this, TrackUserLocation.class);
+                intent.putExtra("sessionId", sessionId);
+                startActivity(intent);
+                finish();
+
                 //show the message with the current time
-                String message = "Attendance ID " + sessionId + "\nYou have successfully Scanned the attendance at: " + currentTime;
+                //String message = "Attendance ID " + sessionId + "\nYou have successfully Scanned the attendance at: " + currentTime;
                 //Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
                 //update the TextView with the message and current time
-                qrMessageTextView.setText(message);
+                //qrMessageTextView.setText(message);
             }
         }else {
             super.onActivityResult(requestCode, resultCode, data);

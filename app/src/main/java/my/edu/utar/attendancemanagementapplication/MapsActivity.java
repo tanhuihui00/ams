@@ -2,6 +2,7 @@ package my.edu.utar.attendancemanagementapplication;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,13 +13,20 @@ import android.os.Build;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -54,10 +62,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     Double finalLat, finalLog;
 
+    Intent intent;
+    String sessionId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        intent = getIntent();
+        sessionId = intent.getStringExtra("sessionId");
 
         permissions.add(ACCESS_FINE_LOCATION);
         permissions.add(ACCESS_COARSE_LOCATION);
@@ -86,12 +100,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 //save latitude and longitude to DB (attendance session)
-                //finalLat
-                //finalLog
+                /*
                 Intent intent = new Intent(MapsActivity.this, TrackUserLocation.class);
                 intent.putExtra("lat", finalLat);
                 intent.putExtra("lng", finalLog);
                 startActivity(intent);
+                */
+
+                LatLng finalLoc = new LatLng(finalLat, finalLog);
+
+                // Create a new intent to hold the data to return
+                Intent resultIntent = new Intent();
+                // Put the data to return as an extra in the intent
+                resultIntent.putExtra("lecturerLocation", finalLoc.toString());
+                // Set the result code and result intent
+                setResult(Activity.RESULT_OK, resultIntent);
+                // Finish the activity
+                finish();
+
+
             }
         });
     }
@@ -178,7 +205,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     addressEditText.setText(getCompleteAddressString(latLng.latitude,latLng.longitude));
                 }
             });
-
         } else {
             locationTrack.showSettingsAlert();
         }
