@@ -32,11 +32,27 @@ public class LoginActivity extends AppCompatActivity {
 
     String result = "";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        SharedPreferences retrievePrefs = getSharedPreferences("login_prefs", MODE_PRIVATE);
+        String username = retrievePrefs.getString("username", "");
+        String userRole = retrievePrefs.getString("role", "");
+        Boolean loggedIn = retrievePrefs.getBoolean("loggedIn", false);
+
+        if (!username.equals("") && loggedIn != false){
+            if(userRole.equalsIgnoreCase("student")){
+                Intent intent = new Intent(LoginActivity.this, MainActivity2.class);
+                startActivity(intent);
+                finish();
+            }else{
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }
 
         loginEmail = findViewById(R.id.login_email);
         loginPassword = findViewById(R.id.login_password);
@@ -48,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this,SignupActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -60,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                 String email = loginEmail.getText().toString();
                 String password = loginPassword.getText().toString();
 
-                MyThread connectThread = new MyThread(email, password, handler,getString(R.string.apikey));
+                MyThread connectThread = new MyThread(email, password, handler);
                 connectThread.start();
             }
         });
@@ -71,14 +88,11 @@ public class LoginActivity extends AppCompatActivity {
         private String mEmail;
         private String mPW;
         private Handler mHandler;
-        private String mApiKey;
 
-        public MyThread(String email, String pw, Handler handler,String apiKey){
+        public MyThread(String email, String pw, Handler handler){
             this.mEmail = email;
             this.mPW = pw;
             this.mHandler = handler;
-            this.mApiKey = apiKey;
-
         }
 
         public void run(){
@@ -88,10 +102,8 @@ public class LoginActivity extends AppCompatActivity {
                 URL url = new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/Student?email=eq."+mEmail);
                 HttpURLConnection hc = (HttpURLConnection)url.openConnection();
 
-                hc.setRequestProperty("apikey",mApiKey);
-                hc.setRequestProperty("Authorization","Bearer "+mApiKey);
-                hc.setRequestProperty("Range","0");
-
+                hc.setRequestProperty("apikey",getString(R.string.apikey));
+                hc.setRequestProperty("Authorization","Bearer "+getString(R.string.apikey));
 
                 InputStream input = hc.getInputStream();
                 result = readStream(input);
@@ -117,7 +129,17 @@ public class LoginActivity extends AppCompatActivity {
                                         editor.putString("name",jsonArray.getJSONObject(0).get("name").toString());
                                         editor.commit();
 
-                                        goToDashboardPage();
+                                        SharedPreferences prefs = getSharedPreferences("login_prefs", MODE_PRIVATE);
+                                        String role = prefs.getString("role", "");
+
+                                        Intent intent;
+                                        if(role.equalsIgnoreCase("student")){
+                                            intent = new Intent(LoginActivity.this, MainActivity2.class);
+                                        }else{
+                                            intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        }
+                                        startActivity(intent);
+                                        finish();
 
                                     }else{
                                         Toast.makeText(getApplicationContext(),"Incorrect login credentials, please try again.",Toast.LENGTH_SHORT).show();
@@ -132,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
                 }else{
-                    Log.i("MainActivity2","Response code: "+hc.getResponseCode());
+                    Log.i("LoginActivity","Response code: "+hc.getResponseCode());
                 }
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -142,15 +164,6 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e("TAG", "IOException: "+e.getMessage() );
             }
         }
-    }
-    public void goToDashboardPage(){
-        // Retrieve login details
-        SharedPreferences prefs = getSharedPreferences("login_prefs", MODE_PRIVATE);
-        String role = prefs.getString("role", "");
-
-        Class<?> targetActivity = role.equalsIgnoreCase("student") ? MainActivity2.class : MainActivity.class;
-        Intent intent = new Intent(LoginActivity.this, targetActivity);
-        startActivity(intent);
     }
 
     private String readStream(InputStream is) {
@@ -163,7 +176,6 @@ public class LoginActivity extends AppCompatActivity {
             }
             return bo.toString();
         } catch (IOException e) {
-            Log.e("TAG", "readStream: "+e.getMessage() );
             return "";
         }
     }
