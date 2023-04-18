@@ -99,13 +99,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //save latitude and longitude to DB (attendance session)
-                /*
-                Intent intent = new Intent(MapsActivity.this, TrackUserLocation.class);
-                intent.putExtra("lat", finalLat);
-                intent.putExtra("lng", finalLog);
-                startActivity(intent);
-                */
 
                 LatLng finalLoc = new LatLng(finalLat, finalLog);
 
@@ -117,7 +110,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 setResult(Activity.RESULT_OK, resultIntent);
                 // Finish the activity
                 finish();
-
 
             }
         });

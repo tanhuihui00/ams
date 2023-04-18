@@ -141,7 +141,7 @@ public class TrackUserLocation extends AppCompatActivity {
                                 float distance = findDistanceBetween(mLat,mLng,covertStringToLatLng(result).latitude,covertStringToLatLng(result).longitude);
 
                                 //if student's current location must around 500 meters with the designated area (campus)
-                                if(distance <= 5000){
+                                if(distance <= 500){
 
                                     // Get current date
                                     java.util.Date currentDateTime = Calendar.getInstance().getTime();
