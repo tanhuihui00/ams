@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity2 extends AppCompatActivity {
 
-    Button viewattendance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +29,8 @@ public class MainActivity2 extends AppCompatActivity {
             finish();
         }
 
-        viewattendance = findViewById(R.id.view_attendance_button);
-        viewattendance.setOnClickListener(new View.OnClickListener() {
+        Button viewAttendanceBtn = findViewById(R.id.view_attendance_button);
+        viewAttendanceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity2.this, StudentViewAttendance.class);
