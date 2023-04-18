@@ -125,7 +125,6 @@ public class TrackUserLocation extends AppCompatActivity {
                 hc.setRequestProperty("apikey",getString(R.string.apikey));
                 hc.setRequestProperty("Authorization","Bearer "+getString(R.string.apikey));
 
-
                 InputStream input = hc.getInputStream();
                 result = readStream(input);
 
@@ -141,7 +140,7 @@ public class TrackUserLocation extends AppCompatActivity {
                                 float distance = findDistanceBetween(mLat,mLng,covertStringToLatLng(result).latitude,covertStringToLatLng(result).longitude);
 
                                 //if student's current location must around 500 meters with the designated area (campus)
-                                if(distance <= 500){
+                                if(distance <= 5000){
 
                                     // Get current date
                                     java.util.Date currentDateTime = Calendar.getInstance().getTime();
@@ -158,9 +157,10 @@ public class TrackUserLocation extends AppCompatActivity {
                                     // Retrieve login details
                                     SharedPreferences retrievePrefs = getSharedPreferences("login_prefs", MODE_PRIVATE);
                                     String userID = retrievePrefs.getString("username", "");
+
                                     Handler handler2 = new Handler();
-                                    MyInsertThread connectThread2 = new MyInsertThread(attendanceID, userID, "Success", currentDate,  currentTime, handler2);
-                                    connectThread2.start();
+                                    MySearchDuplicateThread connectSearchThread = new MySearchDuplicateThread(attendanceID, userID, currentDate,  currentTime, handler2);
+                                    connectSearchThread.start();
 
                                 }else{
                                     DecimalFormat decimalFormat = new DecimalFormat("#");
@@ -198,17 +198,16 @@ public class TrackUserLocation extends AppCompatActivity {
         }
     }
 
-    private class MyInsertThread extends Thread{
+    private class MySearchDuplicateThread extends Thread{
 
-        private String attendanceID, userID, status;
+        private String attendanceID, userID;
         Date takenDate;
         Time takenTime;
         private Handler mHandler;
 
-        public MyInsertThread(String attendanceID, String userID, String status, Date takenDate, Time takenTime, Handler handler){
+        public MySearchDuplicateThread(String attendanceID, String userID, Date takenDate, Time takenTime, Handler handler){
             this.attendanceID = attendanceID;
             this.userID = userID;
-            this.status = status;
             this.takenDate = takenDate;
             this.takenTime = takenTime;
             this.mHandler = handler;
@@ -217,9 +216,82 @@ public class TrackUserLocation extends AppCompatActivity {
         public void run(){
 
             try {
-                URL url = new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/Session");
+                URL url = new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/Session?userID=eq."+userID+"&attendanceID=eq."+attendanceID);
                 HttpURLConnection hc = (HttpURLConnection)url.openConnection();
-                hc.setRequestMethod("POST");
+
+                hc.setRequestProperty("apikey",getString(R.string.apikey));
+                hc.setRequestProperty("Authorization","Bearer "+getString(R.string.apikey));
+
+                InputStream input = hc.getInputStream();
+                result = readStream(input);
+
+                if(hc.getResponseCode() == 200){
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONArray jsonArray = new JSONArray(result);
+
+                                Handler handler2 = new Handler();
+                                MyInsertThread connectThread2 = null;
+
+                                if(jsonArray.length()>0){
+                                    connectThread2 = new MyInsertThread(attendanceID, userID, "Success", currentDate,  currentTime, false, handler2);
+                                }else{
+                                    connectThread2 = new MyInsertThread(attendanceID, userID, "Success", currentDate,  currentTime, true, handler2);
+                                }
+                                connectThread2.start();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }else{
+                    Log.i("TrackUserLocation","Response code: "+hc.getResponseCode());
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.e("TAG", "MalformedURLException: "+e.getMessage() );
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e("TAG", "IOException: "+e.getMessage() );
+            }
+        }
+    }
+
+    private class MyInsertThread extends Thread{
+
+        private String attendanceID, userID, status;
+        Date takenDate;
+        Time takenTime;
+        private Handler mHandler;
+        private boolean insert;
+
+        public MyInsertThread(String attendanceID, String userID, String status, Date takenDate, Time takenTime, Boolean insert, Handler handler){
+            this.attendanceID = attendanceID;
+            this.userID = userID;
+            this.status = status;
+            this.takenDate = takenDate;
+            this.takenTime = takenTime;
+            this.insert = insert;
+            this.mHandler = handler;
+        }
+
+        public void run(){
+
+            try {
+                URL url = null;
+                HttpURLConnection hc = null;
+
+                if(insert){
+                    url = new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/Session");
+                    hc = (HttpURLConnection)url.openConnection();
+                    hc.setRequestMethod("POST");
+                }else{
+                    url = new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/Session?userID=eq."+ userID+"&attendanceID=eq."+attendanceID);
+                    hc = (HttpURLConnection)url.openConnection();
+                    hc.setRequestMethod("PATCH");
+                }
 
                 hc.setRequestProperty("apikey",getString(R.string.apikey));
                 hc.setRequestProperty("Authorization","Bearer "+getString(R.string.apikey));
@@ -233,7 +305,7 @@ public class TrackUserLocation extends AppCompatActivity {
                 os.flush();
                 os.close();
 
-                if(hc.getResponseCode() == 201){
+                if(hc.getResponseCode() == 201 || hc.getResponseCode() == 204){
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {

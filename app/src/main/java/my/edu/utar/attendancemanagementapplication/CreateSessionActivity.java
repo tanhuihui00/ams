@@ -238,7 +238,6 @@ public class CreateSessionActivity extends AppCompatActivity {
                 hc.setRequestProperty("apikey",getString(R.string.apikey));
                 hc.setRequestProperty("Authorization","Bearer "+getString(R.string.apikey));
 
-                Log.e("TAG", "run: "+action );
                 if(!(action.equals("delete"))){
                     hc.setRequestProperty("Content-Type","application/json");
                     hc.setRequestProperty("Prefer","return=minimal");
