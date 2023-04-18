@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -51,6 +54,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import my.edu.utar.attendancemanagementapplication.databinding.ActivityTeacherViewAttendanceBinding;
 
@@ -65,6 +69,8 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
     ListAdapter listAdapter;
     String currentdate,type,statusshow,id,attendanceidget,code;
     Date cdate;
+    String codeedit;
+    Boolean isSpinnerTouched=false;
     String position;
     Handler handler=new Handler();
     ArrayList<Students> studentsArrayList=new ArrayList<>();
@@ -79,7 +85,7 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
         setContentView(binding.getRoot());
         listAdapter=new ListAdapter(TeacherViewAttendance.this,studentsArrayList,getSupportFragmentManager(),this);
         binding.lv.setAdapter(listAdapter);
-
+        typelist.add("Select one type");
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, typelist);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.classcode.addTextChangedListener(new TextWatcher() {
@@ -95,11 +101,12 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String classcode=binding.classcode.getText().toString();
-                if(!classcode.isEmpty()){
-                    new getListofType().start();
-                    binding.typespinner.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
+                codeedit=editable.toString().toLowerCase();
+                if(!editable.toString().isEmpty()){
+                    typelist.clear();
+                    handler.removeCallbacks(mFilterTask);
+                    handler.postDelayed(mFilterTask, 2000);
+
 
 
                 }else{
@@ -112,7 +119,6 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
         binding.typespinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
                 type = adapterView.getItemAtPosition(i).toString();
 
             }
@@ -122,7 +128,6 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
 
             }
         });
-
 
         binding.searchbutton.setOnClickListener(view -> {
             try{
@@ -145,7 +150,7 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
                     Toast.makeText(TeacherViewAttendance.this, "Select type of class to search", Toast.LENGTH_SHORT).show();
                 }
             }catch(Exception e){
-                Toast.makeText(TeacherViewAttendance.this,"Info needed,Error:"+e.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(TeacherViewAttendance.this,"Info needed",Toast.LENGTH_SHORT).show();
             }
 
 
@@ -160,7 +165,7 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
         binding.savebtn.setOnClickListener(view -> {
             if(listAdapter.getCount()!=0){
                 ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
-                createPdf();
+
             }else{
                 Toast.makeText(TeacherViewAttendance.this, "No data on list", Toast.LENGTH_SHORT).show();
             }
@@ -206,7 +211,7 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
                 progressDialog.show();
             });
             try {
-                URL url=new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/Session?select=status,attendanceID,userID,Student(name),Attendances(subjectCode)&Attendances.subjectCode=eq."+classcode.getText().toString()+"&takenDate=eq."+currentdate+"&Attendances.type=eq."+type);
+                URL url=new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/getattendance?select=status,userID,name,attendanceID&subjectCode=eq."+codeedit.toLowerCase()+"&date=eq."+currentdate+"&type=eq."+type);
                 HttpURLConnection hc= (HttpURLConnection) url.openConnection();
 
                 hc.setRequestProperty("apikey",getString(R.string.apikey));
@@ -224,9 +229,9 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
                         studentsArrayList.clear();
                         attendanceidlist.clear();
                         for(int i=0;i<jsonArray.length();i++){
-                            output=output+jsonArray.getJSONObject(i).getJSONObject("Student").get("name").toString()+" "+jsonArray.getJSONObject(i).get("userID").toString()+" "+
+                            output=output+jsonArray.getJSONObject(i).get("name").toString()+" "+jsonArray.getJSONObject(i).get("userID").toString()+" "+
                                     jsonArray.getJSONObject(i).get("status").toString()+jsonArray.getJSONObject(i).get("attendanceID").toString();
-                            String name=jsonArray.getJSONObject(i).getJSONObject("Student").get("name").toString();
+                            String name=jsonArray.getJSONObject(i).get("name").toString();
                             String id=jsonArray.getJSONObject(i).get("userID").toString();
                             String status=jsonArray.getJSONObject(i).get("status").toString();
                             String attendanceID=jsonArray.getJSONObject(i).get("attendanceID").toString();
@@ -373,7 +378,9 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
         @Override
         public void run() {
             try {
-                URL url=new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/Attendances?select=type&subjectCode=eq."+binding.classcode.getText().toString());
+                Log.d("tag","here");
+                typelist.clear();
+                URL url=new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/gettype?select=type&subjectCode=eq."+codeedit.toLowerCase());
                 HttpURLConnection hc= (HttpURLConnection) url.openConnection();
 
                 hc.setRequestProperty("apikey",getString(R.string.apikey));
@@ -408,4 +415,24 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
         }
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode==PackageManager.PERMISSION_GRANTED){
+            createPdf();
+        }else{
+            Toast.makeText(TeacherViewAttendance.this,"Permission is Denied.",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    Runnable mFilterTask = new Runnable() {
+
+        @Override
+        public void run() {
+           new getListofType().start();
+            binding.typespinner.setAdapter(adapter);
+        }
+    };
 }
