@@ -36,7 +36,6 @@ public class MainActivity2 extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity2.this, StudentViewAttendance.class);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -46,7 +45,6 @@ public class MainActivity2 extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity2.this, QRCodeScanner.class);
                 startActivity(intent);
-                finish();
             }
         });
     }
@@ -61,8 +59,8 @@ public class MainActivity2 extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
                 finish();
-                System.exit(0);
                 finishAffinity();
+                System.exit(0);
             }
         });
         builder.setNegativeButton("Log out", new DialogInterface.OnClickListener() {
@@ -70,8 +68,8 @@ public class MainActivity2 extends AppCompatActivity {
                 dialog.cancel();
                 getApplicationContext().getSharedPreferences("login_prefs", 0).edit().clear().commit();
                 finish();
-                System.exit(0);
                 finishAffinity();
+                System.exit(0);
             }
         });
         builder.show();

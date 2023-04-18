@@ -152,7 +152,8 @@ public class TrackUserLocation extends AppCompatActivity {
 
                                 float distance = findDistanceBetween(mLat,mLng,covertStringToLatLng(result).latitude,covertStringToLatLng(result).longitude);
 
-                                if(distance <= 5000){
+                                //if student's current location must around 500 meters with the designated area (campus)
+                                if(distance <= 500){
 
                                     // Get current date
                                     java.util.Date currentDateTime = Calendar.getInstance().getTime();
@@ -176,7 +177,7 @@ public class TrackUserLocation extends AppCompatActivity {
                                 }else{
                                     DecimalFormat decimalFormat = new DecimalFormat("#");
                                     String formattedNumber = decimalFormat.format(distance);
-                                    String message = "Attendance cannot be taken because the location is too far from the designated area. \n\nPlease try again later.\n\nYour distance to designated area is "+formattedNumber+" meters.";
+                                    String message = "Attendance cannot be taken because the location is too far from the designated area. \n\nYour distance to designated area is "+formattedNumber+" meters.\n\nPlease be within 500 meters and try again.";
 
                                     AlertDialog.Builder builder = new AlertDialog.Builder(TrackUserLocation.this);
                                     builder.setMessage(message)

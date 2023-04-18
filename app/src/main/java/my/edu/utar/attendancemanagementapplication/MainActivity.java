@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, CreateSessionActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AttendanceList.class);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -56,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
                 // Add code to launch the view report activity here
                 Intent intent = new Intent(MainActivity.this, TeacherViewAttendance.class);
                 startActivity(intent);
-                finish();
             }
         });
     }
