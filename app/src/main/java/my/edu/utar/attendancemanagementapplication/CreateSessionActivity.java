@@ -226,9 +226,12 @@ public class CreateSessionActivity extends AppCompatActivity {
                     hc = (HttpURLConnection)url.openConnection();
                     hc.setRequestMethod("POST");
                 }else if (action.equals("delete")){
+                    Log.e("TAG", "run: action"+action );
                     url = new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/Attendances?attendanceID=eq."+ retrievedResult.getAttendanceID());
                     hc = (HttpURLConnection)url.openConnection();
+                    Log.e("TAG", "run: action"+action );
                     hc.setRequestMethod("DELETE");
+                    Log.e("TAG", "run: action"+action );
                 }else{
                     url = new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/Attendances?attendanceID=eq."+ retrievedResult.getAttendanceID());
                     hc = (HttpURLConnection)url.openConnection();
@@ -237,7 +240,7 @@ public class CreateSessionActivity extends AppCompatActivity {
 
                 hc.setRequestProperty("apikey",getString(R.string.apikey));
                 hc.setRequestProperty("Authorization","Bearer "+getString(R.string.apikey));
-
+                Log.e("TAG", "run: action"+action );
                 if(!(action.equals("delete"))){
                     hc.setRequestProperty("Content-Type","application/json");
                     hc.setRequestProperty("Prefer","return=minimal");
@@ -249,7 +252,7 @@ public class CreateSessionActivity extends AppCompatActivity {
                     os.flush();
                     os.close();
                 }
-
+                Log.e("TAG", "run: code "+hc.getResponseCode());
                 if(hc.getResponseCode() == 201 || hc.getResponseCode() == 204){
                     mHandler.post(new Runnable() {
                         @Override
