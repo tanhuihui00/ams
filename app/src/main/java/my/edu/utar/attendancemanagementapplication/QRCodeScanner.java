@@ -61,7 +61,7 @@ public class QRCodeScanner extends AppCompatActivity {
                 //get the session ID
                 String sessionId = result.getContents();
 
-                Intent intent = new Intent(QRCodeScanner.this, TrackUserLocation.class);
+                Intent intent = new Intent(QRCodeScanner.this, IdentityAuthentication.class);
                 intent.putExtra("sessionId", sessionId);
                 startActivity(intent);
                 finish();

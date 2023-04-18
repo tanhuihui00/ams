@@ -84,18 +84,6 @@ public class TrackUserLocation extends AppCompatActivity {
         }
     }
 
-    // Define a contract to launch the activity and receive a result
-    ActivityResultLauncher<Intent> myActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-
-                    }
-                }
-            });
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -153,7 +141,7 @@ public class TrackUserLocation extends AppCompatActivity {
                                 float distance = findDistanceBetween(mLat,mLng,covertStringToLatLng(result).latitude,covertStringToLatLng(result).longitude);
 
                                 //if student's current location must around 500 meters with the designated area (campus)
-                                if(distance <= 500){
+                                if(distance <= 5000){
 
                                     // Get current date
                                     java.util.Date currentDateTime = Calendar.getInstance().getTime();
