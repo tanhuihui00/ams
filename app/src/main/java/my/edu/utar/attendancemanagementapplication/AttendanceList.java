@@ -52,12 +52,6 @@ public class AttendanceList extends AppCompatActivity {
             Handler handler = new Handler();
             MyThread connectThread = new MyThread(handler, "retrieveAllRecord");
             connectThread.start();
-        }else{
-            if(userRole.equalsIgnoreCase("student")){
-                Toast.makeText(getApplicationContext(),"You don't have the permission to access this page.",Toast.LENGTH_SHORT).show();
-                Intent intent =new Intent(AttendanceList.this, MainActivity2.class);
-                startActivity(intent);
-            }
         }
     }
 
@@ -74,7 +68,6 @@ public class AttendanceList extends AppCompatActivity {
         }
 
         public void run(){
-
             try {
                 URL url = null;
                 new Thread(new Runnable() {
@@ -259,7 +252,6 @@ public class AttendanceList extends AppCompatActivity {
         Button clearBtn = new Button(this);
         clearBtn.setLayoutParams(buttonParams);
         clearBtn.setText("Clear");
-        clearBtn.setId(R.id.search_button);
 
         clearBtn.setOnClickListener(view -> {
             editText.setText("");
