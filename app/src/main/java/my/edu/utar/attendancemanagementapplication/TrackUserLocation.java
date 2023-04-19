@@ -52,6 +52,7 @@ public class TrackUserLocation extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     LocationTrack locationTrack;
+    String mySubjectCode, attendanceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,8 @@ public class TrackUserLocation extends AppCompatActivity {
 
             Intent intent = getIntent();
             String sessionID = intent.getStringExtra("sessionId");
+
+            setSubjectCode(sessionID);
 
             Handler handler = new Handler();
             MyThread connectThread = new MyThread(sessionID, mLat, mLng, handler);
@@ -236,11 +239,58 @@ public class TrackUserLocation extends AppCompatActivity {
                                 MyInsertThread connectThread2 = null;
 
                                 if(jsonArray.length()>0){
-                                    connectThread2 = new MyInsertThread(attendanceID, userID, "Success", currentDate,  currentTime, false, handler2);
+                                    connectThread2 = new MyInsertThread(attendanceID, userID, "SUCCESS", currentDate,  currentTime, false, handler2);
                                 }else{
-                                    connectThread2 = new MyInsertThread(attendanceID, userID, "Success", currentDate,  currentTime, true, handler2);
+                                    connectThread2 = new MyInsertThread(attendanceID, userID, "SUCCESS", currentDate,  currentTime, true, handler2);
                                 }
                                 connectThread2.start();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }else{
+                    Log.i("TrackUserLocation","Response code: "+hc.getResponseCode());
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.e("TAG", "MalformedURLException: "+e.getMessage() );
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e("TAG", "IOException: "+e.getMessage() );
+            }
+        }
+    }
+
+    private class MySearchSubjectCodeThread extends Thread{
+
+        private String attendanceID;
+        private Handler mHandler;
+
+        public MySearchSubjectCodeThread(String attendanceID, Handler handler){
+            this.attendanceID = attendanceID;
+            this.mHandler = handler;
+        }
+
+        public void run(){
+
+            try {
+                URL url = new URL("https://wezvcdkmgwkuwlmmkklu.supabase.co/rest/v1/Attendances?attendanceID=eq."+attendanceID);
+                HttpURLConnection hc = (HttpURLConnection)url.openConnection();
+
+                hc.setRequestProperty("apikey",getString(R.string.apikey));
+                hc.setRequestProperty("Authorization","Bearer "+getString(R.string.apikey));
+
+                InputStream input = hc.getInputStream();
+                mySubjectCode = readStream(input);
+
+                if(hc.getResponseCode() == 200){
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONArray jsonArray = new JSONArray(mySubjectCode);
+                                mySubjectCode = jsonArray.getJSONObject(0).get("subjectCode").toString();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -311,7 +361,7 @@ public class TrackUserLocation extends AppCompatActivity {
                         public void run() {
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(TrackUserLocation.this);
-                            builder.setMessage("Your attendance has been taken.")
+                            builder.setMessage("Your attendance for "+mySubjectCode+" has been taken.")
                                     .setTitle("Attendance")
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
@@ -335,6 +385,12 @@ public class TrackUserLocation extends AppCompatActivity {
                 Log.e("TAG", "IOException: "+e.getMessage() );
             }
         }
+    }
+
+    private void setSubjectCode(String attendanceID){
+        Handler handler = new Handler();
+        MySearchSubjectCodeThread connectThread = new MySearchSubjectCodeThread(attendanceID, handler);
+        connectThread.start();
     }
 
     private String readStream(InputStream is) {
