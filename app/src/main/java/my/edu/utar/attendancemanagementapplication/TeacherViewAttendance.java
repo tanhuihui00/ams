@@ -2,37 +2,44 @@ package my.edu.utar.attendancemanagementapplication;
 
 
 import android.Manifest;
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.StrictMode;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.itextpdf.text.DocumentException;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.DialogFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,27 +48,26 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 import my.edu.utar.attendancemanagementapplication.databinding.ActivityTeacherViewAttendanceBinding;
 
 public class TeacherViewAttendance extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, EditDialog.CustomDialogInterface, ListAdapter.OnItemClick {
 
+    private int PERMISSIONCODE=1;
     EditText classcode;
     ListView lv;
+    LinearLayout linearLayout;
     ArrayList<String> typelist=new ArrayList<>();
     ArrayList<String> attendanceidlist=new ArrayList<>();
     ArrayAdapter<String> adapter;
@@ -70,8 +76,8 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
     String currentdate,type,statusshow,id,attendanceidget,code;
     Date cdate;
     String codeedit;
-    Boolean isSpinnerTouched=false;
     String position;
+    Bitmap bitmap;
     Handler handler=new Handler();
     ArrayList<Students> studentsArrayList=new ArrayList<>();
     ProgressDialog progressDialog;
@@ -85,6 +91,7 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
         setContentView(binding.getRoot());
         listAdapter=new ListAdapter(TeacherViewAttendance.this,studentsArrayList,getSupportFragmentManager(),this);
         binding.lv.setAdapter(listAdapter);
+        linearLayout=findViewById(R.id.ll);
         typelist.add("Select one type");
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, typelist);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -164,7 +171,18 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
 
         binding.savebtn.setOnClickListener(view -> {
             if(listAdapter.getCount()!=0){
-                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
+               if(ContextCompat.checkSelfPermission(TeacherViewAttendance.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                {
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                        Toast.makeText(TeacherViewAttendance.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                        bitmap = LoadBitmap(linearLayout, linearLayout.getWidth()-80, linearLayout.getHeight()+60);
+                        setPdf();
+                    }else{
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                    }
+                }else{
+                   requestStoragePermission();
+               }
 
             }else{
                 Toast.makeText(TeacherViewAttendance.this, "No data on list", Toast.LENGTH_SHORT).show();
@@ -172,6 +190,107 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
 
         });
 
+    }
+
+    private Bitmap LoadBitmap(View v, int width, int height){
+        Bitmap bitmap1=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
+        Canvas canvas=new Canvas(bitmap1);
+
+        v.draw(canvas);
+        return bitmap1;
+    }
+
+    private void setPdf() {
+        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        //  Display display = wm.getDefaultDisplay();
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        float hight = displaymetrics.heightPixels;
+        float width = displaymetrics.widthPixels;
+
+
+        int convertHighet = (int) hight, convertWidth = (int) width;
+
+        PdfDocument document = new PdfDocument();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(convertWidth, convertHighet, 1).create();
+        PdfDocument.Page page = document.startPage(pageInfo);
+
+        Canvas canvas = page.getCanvas();
+
+        Paint paint = new Paint();
+        canvas.drawPaint(paint);
+        bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+
+        Rect srcRect = new Rect(20, 0, bitmap.getWidth(),
+                bitmap.getHeight() );
+        Rect desRect = new Rect(60, 0, bitmap.getWidth(), bitmap.getHeight());
+        paint.setColor(Color.BLUE);
+
+
+        canvas.drawBitmap(bitmap, srcRect, desRect, null);
+        document.finishPage(page);
+
+        // write the document content
+        String targetPdf = "/sdcard/"+codeedit+type+" "+currentdate+".pdf";
+        File filePath;
+        filePath = new File(targetPdf);
+        try {
+            document.writeTo(new FileOutputStream(filePath));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
+        }////////////////////
+
+        // close the document
+        document.close();
+        Toast.makeText(this, "successfully pdf created", Toast.LENGTH_SHORT).show();
+
+        openPdf();
+
+    }
+
+    private void openPdf() {
+        String path;
+        File file = new File("/sdcard/"+codeedit+type+" "+currentdate+".pdf");
+        if (file.exists()) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+//            Uri uri = Uri.fromFile(file);
+            Uri uri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", file);
+            intent.setDataAndType(uri, "application/pdf");
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(this, "No Application for pdf view", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void requestStoragePermission() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            new AlertDialog.Builder(this)
+                    .setTitle("Permission needed")
+                    .setMessage("This permission is needed because of this and that")
+                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(TeacherViewAttendance.this,
+                                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONCODE);
+                        }
+                    })
+                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+        }else{
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONCODE);
+        }
     }
 
     @Override
@@ -281,49 +400,11 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
         }
     }
 
-    private void createPdf() {
-        if (binding.classcode.getText().toString()!=""){
-            List<String> paragraphList = Arrays.asList("Class code: "+code,"Date: "+currentdate);
-            PdfService pdfService = new PdfService();
-            try {
-                openFile(pdfService.createAttendanceTable(studentsArrayList, paragraphList));
-
-            } catch (DocumentException e) {
-                e.printStackTrace();
-                Toast.makeText(TeacherViewAttendance.this, "Failed to create "+e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }else{
-            Log.d("tag","Class code is empty");
-        }
+   
 
 
 
 
-    }
-
-    private void openFile(File file) {
-        String path = null;
-        try {
-            Uri urifile=Uri.fromFile(file);
-            path = FileHandler.getPath(this, urifile);
-            File pdfFile = new File(path);
-            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-            StrictMode.setVmPolicy(builder.build());
-            builder.detectFileUriExposure();
-            Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
-            Uri uri=Uri.fromFile(pdfFile);
-            pdfIntent.setDataAndType(uri, "application/pdf");
-            pdfIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) ;
-            try {
-                startActivity(pdfIntent);
-            } catch (ActivityNotFoundException e) {
-                Toast.makeText(TeacherViewAttendance.this, "Can't read pdf file", Toast.LENGTH_SHORT).show();
-            }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     class updateData extends Thread{
         HttpURLConnection hc;
@@ -419,11 +500,18 @@ public class TeacherViewAttendance extends AppCompatActivity implements DatePick
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode==PackageManager.PERMISSION_GRANTED){
-            createPdf();
-        }else{
-            Toast.makeText(TeacherViewAttendance.this,"Permission is Denied.",Toast.LENGTH_SHORT).show();
+        if(requestCode==PERMISSIONCODE){
+            if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    bitmap = LoadBitmap(linearLayout, linearLayout.getWidth(), linearLayout.getHeight());
+                    setPdf();
+
+            }else{
+                Toast.makeText(TeacherViewAttendance.this,"Permission Denied.",Toast.LENGTH_SHORT).show();
+            }
+
         }
+
+
     }
 
 
