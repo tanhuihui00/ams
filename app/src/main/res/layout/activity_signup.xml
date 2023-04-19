@@ -9,6 +9,9 @@
     android:gravity="center"
     android:background="@drawable/pgbkg"
     tools:context=".SignupActivity">
+    <ScrollView>
+
+    </ScrollView>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
