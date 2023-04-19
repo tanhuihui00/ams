@@ -21,10 +21,17 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences retrievePrefs = getSharedPreferences("login_prefs", MODE_PRIVATE);
         String username = retrievePrefs.getString("username", "");
+        String userRole = retrievePrefs.getString("role", "");
         Boolean loggedIn = retrievePrefs.getBoolean("loggedIn", false);
 
         if (username.equals("") || loggedIn == false){
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+        if (userRole.equalsIgnoreCase("student")){
+            Intent intent = new Intent(MainActivity.this, MainActivity2.class);
             startActivity(intent);
             finish();
         }

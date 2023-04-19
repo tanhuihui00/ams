@@ -29,6 +29,12 @@ public class MainActivity2 extends AppCompatActivity {
             finish();
         }
 
+        if (userRole.equalsIgnoreCase("lecturer")){
+            Intent intent = new Intent(MainActivity2.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         Button viewAttendanceBtn = findViewById(R.id.view_attendance_button);
         viewAttendanceBtn.setOnClickListener(new View.OnClickListener() {
             @Override

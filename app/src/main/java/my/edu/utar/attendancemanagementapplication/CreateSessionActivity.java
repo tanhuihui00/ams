@@ -38,11 +38,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-
 import com.google.android.gms.maps.model.LatLng;
 
 public class CreateSessionActivity extends AppCompatActivity {
